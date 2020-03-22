@@ -1,0 +1,13 @@
+{
+  "welcome": "Bienvenido a Acoumeter",
+  "account_creation": "Creacion de nueva cuenta",
+  "register": "Registro",
+  "username": "Usuario",
+  "password": "Contraseña",
+  "repeat_password": "Repite la contraseña",
+  "login": "Iniciar sesion",
+  "new_account": "Aun no tienes cuenta? Registrate",
+  "password_too_short": "Contrasena muy corta",
+  "password_repeat_different": "Las contrasenas son distintas",
+  "username_required": "El usuario no puede estar vacio"
+}

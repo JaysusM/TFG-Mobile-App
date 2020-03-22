@@ -1,0 +1,13 @@
+{
+  "welcome": "Welcome to Acoumeter",
+  "account_creation": "Account register",
+  "register": "Register",
+  "username": "Username",
+  "password": "Password",
+  "repeat_password": "Repeat password",
+  "login": "Log in",
+  "new_account": "Don't you have an account? Create one!",
+  "password_too_short": "Password too short",
+  "password_repeat_different": "Password fields aren't equal",
+  "username_required": "The username is a required field"
+}

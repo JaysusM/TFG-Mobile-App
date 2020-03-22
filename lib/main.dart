@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/ui/app_scaffold.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:internationalization/internationalization.dart';
 
-void main() => runApp(MyApp());
+void main () async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Internationalization.loadConfigurations();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: suportedLocales,
+      localizationsDelegates: [
+        Internationalization.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       title: 'AcouMeter',
       theme: ThemeData(
         fontFamily: 'Roboto',
@@ -14,6 +26,7 @@ class MyApp extends StatelessWidget {
         accentColor: const Color(0xFF7E7F92),
         backgroundColor: const Color(0xFF333349),
         focusColor: const Color(0xFF7E7F92),
+        buttonColor: const Color(0xFF3066BE),
         toggleableActiveColor: const Color(0xFFEA3742),
         textTheme: TextTheme(
           body1: TextStyle(
