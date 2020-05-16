@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      title: 'AcouMeter',
+      title: 'Malaga Sound Reader',
       theme: ThemeData(
         fontFamily: 'Roboto',
         primaryColor: const Color(0xFF333349),
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           body2: TextStyle(
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w200,
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 17.0),
           title: TextStyle(
               fontFamily: 'OpenSansCondensed',
@@ -52,27 +52,33 @@ class MyApp extends StatelessWidget {
           subtitle: TextStyle(
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w100,
-            fontSize: 11.0,
-            color: Colors.white,
+            fontSize: 14.0,
+            color: Colors.black,
           ),
           headline: TextStyle(
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w300,
             fontSize: 18.0,
-            color: Colors.white,
+            color: Colors.black,
           ),
           subhead: TextStyle(
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w100,
             fontSize: 15.0,
-            color: Colors.white,
+            color: Colors.black,
           ),
           display1: TextStyle(
             fontFamily: 'Roboto',
             fontWeight: FontWeight.w500,
             fontSize: 20.0,
-            color: Colors.white,
+            color: Colors.black,
           ),
+          button: TextStyle(
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w300,
+              color: Colors.white,
+              fontSize: 17.0
+          )
         ),
       ),
       home: AppScaffold()

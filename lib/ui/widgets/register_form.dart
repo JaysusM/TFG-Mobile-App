@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:internationalization/internationalization.dart';
+import 'package:mobile_app/utils/api.dart';
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -10,7 +14,65 @@ class RegisterForm extends StatefulWidget {
 
 class RegisterFormState extends State<RegisterForm> {
   GlobalKey<FormState> key = new GlobalKey<FormState>();
-  String _username, _password;
+  String _username, _password, _errorMessage;
+
+  void handleUsernameSave(value) {
+    this.setState(() {
+      this._username = value;
+    });
+  }
+
+  void handlePasswordSave(value) {
+    this.setState(() {
+      this._password = value;
+    });
+  }
+
+  String handleUsernameValidation(value) {
+    if (value?.length == 0) {
+      return Strings.of(context).valueOf("username_required");
+    }
+
+    key.currentState.save();
+    return null;
+  }
+
+  String handlePasswordValidation(value) {
+    if (value.length < 6) {
+      return Strings.of(context).valueOf("password_too_short");
+    }
+
+    key.currentState.save();
+    return null;
+  }
+
+  void handleSignUpResponse(Response response, BuildContext context) {
+    Map<String, dynamic> body = jsonDecode(response.body);
+    if (body["code"] != 0) {
+      this.setState(() {
+        _errorMessage = body["message"];
+      });
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void handleRegisterAction(BuildContext context) {
+    bool isFormValid = key.currentState.validate();
+    if (isFormValid) {
+      Api apiInstance = Api.getInstance();
+      String language = Strings.of(context).valueOf("language");
+      apiInstance
+          .signUp(_username, _password, language)
+          .then((response) => handleSignUpResponse(response, context));
+    }
+  }
+
+   Widget getErrorWidget(BuildContext context) {
+    return (_errorMessage != null && _errorMessage.length > 0)
+        ? Text(_errorMessage, style: Theme.of(context).textTheme.caption)
+        : Container();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,24 +92,20 @@ class RegisterFormState extends State<RegisterForm> {
                       Strings.of(context).valueOf("account_creation"),
                       style: Theme.of(context)
                           .textTheme
-                          .body1
+                          .body2
                           .copyWith(fontSize: 30, fontWeight: FontWeight.w300),
                     ),
                     SizedBox(height: fieldWidth * 0.25),
                     TextFormField(
-                        validator: (value) => value?.length == 0
-                            ? Strings.of(context).valueOf("username_required")
-                            : null,
-                        onChanged: (value) => this._username = value,
+                        validator: handleUsernameValidation,
+                        onSaved: handleUsernameSave,
                         decoration: InputDecoration(
                             labelText: Strings.of(context).valueOf("username")),
                         style: Theme.of(context).textTheme.body1),
                     SizedBox(height: fieldWidth * 0.1),
                     TextFormField(
                       obscureText: true,
-                      validator: (value) => value.length < 6
-                          ? Strings.of(context).valueOf("password_too_short")
-                          : null,
+                      validator: handlePasswordValidation,
                       onChanged: (value) => this._password = value,
                       decoration: InputDecoration(
                           labelText: Strings.of(context).valueOf("password")),
@@ -56,6 +114,7 @@ class RegisterFormState extends State<RegisterForm> {
                     SizedBox(height: fieldWidth * 0.1),
                     TextFormField(
                       obscureText: true,
+                      onSaved: handlePasswordSave,
                       validator: (value) => value != this._password
                           ? Strings.of(context)
                               .valueOf("password_repeat_different")
@@ -65,14 +124,16 @@ class RegisterFormState extends State<RegisterForm> {
                               Strings.of(context).valueOf("repeat_password")),
                       style: Theme.of(context).textTheme.body1,
                     ),
-                    SizedBox(height: fieldWidth * 0.2),
+                    SizedBox(height: fieldWidth * 0.1),
+                    getErrorWidget(context),
+                    SizedBox(height: fieldWidth * 0.1),
                     RaisedButton(
                       color: Theme.of(context).primaryColor,
                       splashColor: Theme.of(context).splashColor,
                       onPressed: _onSubmit,
                       child: Container(
                         child: Text(Strings.of(context).valueOf("register"),
-                            style: Theme.of(context).textTheme.body2),
+                            style: Theme.of(context).textTheme.button),
                         padding: EdgeInsets.symmetric(horizontal: 10),
                       ),
                     ),

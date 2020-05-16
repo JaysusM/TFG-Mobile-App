@@ -1,13 +1,19 @@
 {
-  "welcome": "Bienvenido a Acoumeter",
+  "language": "es",
+  "welcome": "Bienvenido a MSR",
   "account_creation": "Creacion de nueva cuenta",
   "register": "Registro",
-  "username": "Usuario",
+  "username": "Nombre de usuario",
   "password": "Contraseña",
   "repeat_password": "Repite la contraseña",
   "login": "Iniciar sesion",
   "new_account": "Aun no tienes cuenta? Registrate",
   "password_too_short": "Contrasena muy corta",
   "password_repeat_different": "Las contrasenas son distintas",
-  "username_required": "El usuario no puede estar vacio"
+  "username_required": "El usuario no puede estar vacio",
+  "password_required": "El campo de contraseña no puede estar vacio",
+  "discover": "Dispositivos descubiertos",
+  "unnamed": "Sin nombre",
+  "active_screen": "Servicio activo",
+  "sending_data": "Enviando datos..."
 }
