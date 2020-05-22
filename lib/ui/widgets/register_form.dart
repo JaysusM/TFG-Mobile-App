@@ -5,6 +5,8 @@ import 'package:http/http.dart';
 import 'package:internationalization/internationalization.dart';
 import 'package:mobile_app/utils/api.dart';
 
+import 'loading_indicator.dart';
+
 class RegisterForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -15,6 +17,13 @@ class RegisterForm extends StatefulWidget {
 class RegisterFormState extends State<RegisterForm> {
   GlobalKey<FormState> key = new GlobalKey<FormState>();
   String _username, _password, _errorMessage;
+  bool _isLoading;
+
+  @override
+  void initState() {
+    this._isLoading = false;
+    super.initState();
+  }
 
   void handleUsernameSave(value) {
     this.setState(() {
@@ -46,13 +55,25 @@ class RegisterFormState extends State<RegisterForm> {
     return null;
   }
 
+  String handlePasswordRepeatValidation(value) {
+    if (value != this._password) {
+      return Strings.of(context).valueOf("password_repeat_different");
+    }
+
+    return null;
+  }
+
   void handleSignUpResponse(Response response, BuildContext context) {
     Map<String, dynamic> body = jsonDecode(response.body);
     if (body["code"] != 0) {
       this.setState(() {
+        _isLoading = false;
         _errorMessage = body["message"];
       });
     } else {
+      this.setState(() {
+        this._isLoading = false;
+      });
       Navigator.of(context).pop();
     }
   }
@@ -60,6 +81,9 @@ class RegisterFormState extends State<RegisterForm> {
   void handleRegisterAction(BuildContext context) {
     bool isFormValid = key.currentState.validate();
     if (isFormValid) {
+      this.setState(() {
+        this._isLoading = true;
+      });
       Api apiInstance = Api.getInstance();
       String language = Strings.of(context).valueOf("language");
       apiInstance
@@ -68,10 +92,25 @@ class RegisterFormState extends State<RegisterForm> {
     }
   }
 
-   Widget getErrorWidget(BuildContext context) {
+  Widget getErrorWidget(BuildContext context) {
     return (_errorMessage != null && _errorMessage.length > 0)
         ? Text(_errorMessage, style: Theme.of(context).textTheme.caption)
         : Container();
+  }
+
+  Widget getRegisterButton(BuildContext context) {
+    return LoadingIndicator(
+        isLoading: _isLoading,
+        child: RaisedButton(
+          color: Theme.of(context).primaryColor,
+          splashColor: Theme.of(context).splashColor,
+          onPressed: () => handleRegisterAction(context),
+          child: Container(
+            child: Text(Strings.of(context).valueOf("register"),
+                style: Theme.of(context).textTheme.button),
+            padding: EdgeInsets.symmetric(horizontal: 10),
+          ),
+        ));
   }
 
   @override
@@ -105,8 +144,9 @@ class RegisterFormState extends State<RegisterForm> {
                     SizedBox(height: fieldWidth * 0.1),
                     TextFormField(
                       obscureText: true,
+                      onSaved: handlePasswordSave,
                       validator: handlePasswordValidation,
-                      onChanged: (value) => this._password = value,
+                      onChanged: handlePasswordSave,
                       decoration: InputDecoration(
                           labelText: Strings.of(context).valueOf("password")),
                       style: Theme.of(context).textTheme.body1,
@@ -114,11 +154,7 @@ class RegisterFormState extends State<RegisterForm> {
                     SizedBox(height: fieldWidth * 0.1),
                     TextFormField(
                       obscureText: true,
-                      onSaved: handlePasswordSave,
-                      validator: (value) => value != this._password
-                          ? Strings.of(context)
-                              .valueOf("password_repeat_different")
-                          : null,
+                      validator: handlePasswordRepeatValidation,
                       decoration: InputDecoration(
                           labelText:
                               Strings.of(context).valueOf("repeat_password")),
@@ -127,23 +163,10 @@ class RegisterFormState extends State<RegisterForm> {
                     SizedBox(height: fieldWidth * 0.1),
                     getErrorWidget(context),
                     SizedBox(height: fieldWidth * 0.1),
-                    RaisedButton(
-                      color: Theme.of(context).primaryColor,
-                      splashColor: Theme.of(context).splashColor,
-                      onPressed: _onSubmit,
-                      child: Container(
-                        child: Text(Strings.of(context).valueOf("register"),
-                            style: Theme.of(context).textTheme.button),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                      ),
-                    ),
+                    getRegisterButton(context),
                     SizedBox(height: fieldWidth * 0.3),
                   ]))),
       scrollDirection: Axis.vertical,
     );
-  }
-
-  void _onSubmit() {
-    this.key.currentState.validate();
   }
 }

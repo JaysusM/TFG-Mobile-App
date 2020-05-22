@@ -14,6 +14,8 @@ dependencies:
   http: ^0.12.0+4
   flutter_bluetooth_serial: ^0.2.2
   geolocator: ^4.0.3
+  loading: ^1.0.2
+  permission_handler: ^5.0.0+hotfix.6
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,6 @@
 {
   "language": "es",
-  "welcome": "Bienvenido a MSR",
+  "welcome": "Bienvenido a AcouMeter",
   "account_creation": "Creacion de nueva cuenta",
   "register": "Registro",
   "username": "Nombre de usuario",
@@ -15,5 +15,6 @@
   "discover": "Dispositivos descubiertos",
   "unnamed": "Sin nombre",
   "active_screen": "Servicio activo",
-  "sending_data": "Enviando datos..."
+  "sending_data": "Enviando datos...",
+  "reads": "Lecturas"
 }
