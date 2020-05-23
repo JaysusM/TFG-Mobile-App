@@ -16,5 +16,9 @@
   "unnamed": "Sin nombre",
   "active_screen": "Servicio activo",
   "sending_data": "Enviando datos...",
-  "reads": "Lecturas"
+  "reads": "Lecturas",
+  "pairing": "Emparejando...",
+  "pairing_wait": "Por favor, espere, estamos intentando conectar con el dispositivo seleccionado",
+  "error_title": "Error de emparejamiento",
+  "error_connecting": "Ha ocurrido un error conectando, puede que el dispositivo ya este emparejado"
 }

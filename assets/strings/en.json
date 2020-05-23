@@ -16,5 +16,9 @@
   "unnamed": "Unnamed",
   "active_screen": "Service is active",
   "sending_data": "Sending data...",
-  "reads": "Reads"
+  "reads": "Reads",
+  "pairing": "Pairing...",
+  "pairing_wait": "Please, wait, we are trying to connect with the selected device",
+  "error_connecting_title": "Pairing error",
+  "error_connecting": "Something wrong occurred while connecting to the device. Maybe it is already paired with other device."
 }

@@ -1,15 +1,19 @@
-import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:internationalization/internationalization.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../utils/api.dart';
+import 'package:mobile_app/utils/api.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mobile_app/utils/globals.dart' as globals;
 
 const SECONDS_PER_READ = 10;
 
 class ActiveScreen extends StatefulWidget {
+  final BluetoothConnection _connection;
+
+  ActiveScreen(this._connection);
+
   @override
   State<StatefulWidget> createState() {
     return ActiveScreenState();
@@ -18,8 +22,18 @@ class ActiveScreen extends StatefulWidget {
 
 class ActiveScreenState extends State<ActiveScreen> {
   final Api _api = Api.getInstance();
-  Timer _timer;
   int _numberReadOK, _numberReadFail;
+
+  void sendRead(String username, String position, String value, String language) {
+    _api
+      .addNewValue(username, position, value, language)
+      .then((_) => this.setState(() {
+            this._numberReadOK++;
+          }))
+      .catchError((_) => this.setState(() {
+            this._numberReadFail++;
+          }));
+  }
 
   @override
   void initState() {
@@ -28,22 +42,23 @@ class ActiveScreenState extends State<ActiveScreen> {
 
     Permission.location.request().then((PermissionStatus status) {
       if (status.isGranted) {
-        _timer = Timer.periodic(new Duration(seconds: SECONDS_PER_READ), (_) {
-          Geolocator()
-              .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-              .then((Position position) {
-            String parsedPosition =
-                "${position.latitude},${position.longitude}";
-            String language = Strings.of(context).valueOf("language");
-            _api
-                .addNewValue("test", parsedPosition, "1.0", language)
-                .then((_) => this.setState(() {
-                      this._numberReadOK++;
-                    }))
-                .catchError((_) => this.setState(() {
-                      this._numberReadFail++;
-                    }));
-          });
+        String readingData = "";
+        widget._connection.input.listen((data) {
+          readingData += ascii.decode(data);
+          String separator = "\r\n";
+          if (readingData.contains(separator)) {
+            List<String> readings = readingData.split(separator);
+            readingData = readings[1];
+            Geolocator()
+            .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+            .then((Position position) {
+              String parsedPosition = "${position.latitude},${position.longitude}";
+              String language = Strings.of(context).valueOf("language");
+              String userId = globals.userId;
+
+              sendRead(userId, parsedPosition, readings[0], language);
+            }); 
+          }
         });
       } else if (status.isPermanentlyDenied) {
         Navigator.of(context).pop();
@@ -57,7 +72,7 @@ class ActiveScreenState extends State<ActiveScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    widget._connection.close();
     super.dispose();
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/line_scale_pulse_out_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:mobile_app/ui/widgets/loading_loader.dart';
 
 class LoadingIndicator extends StatelessWidget {
   bool _isLoading;
@@ -14,10 +15,6 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget loadingWidget = Loading(
-        indicator: LineScalePulseOutIndicator(),
-        color: Theme.of(context).primaryColor);
-
-    return (_isLoading) ? loadingWidget : _child;
+    return (_isLoading) ? LoadingLoader() : _child;
   }
 }

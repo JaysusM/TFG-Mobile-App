@@ -1,11 +1,8 @@
 import 'dart:convert';
-
+import 'package:mobile_app/utils/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:internationalization/internationalization.dart';
-import 'package:loading/indicator/line_scale_pulse_out_indicator.dart';
-import 'package:loading/loading.dart';
-import 'package:mobile_app/ui/screens/active_screen.dart';
 import 'package:mobile_app/ui/widgets/loading_indicator.dart';
 import 'package:mobile_app/utils/api.dart';
 import 'register_screen.dart';
@@ -30,13 +27,17 @@ class LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
         _errorMessage = body["message"];
       });
+
     } else {
+      String userId = body["data"]["userId"];
+      globals.userId = userId;
+      
       this.setState(() {
         _isLoading = false;
       });
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ActiveScreen()));
+          .push(MaterialPageRoute(builder: (_) => DiscoverScreen()));
     }
   }
 

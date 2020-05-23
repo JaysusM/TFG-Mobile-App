@@ -17,11 +17,7 @@ class DeviceTile extends StatelessWidget {
   }
 
   void connectToDevice() async {
-    //this._onConnectClicked(this._device);
-    BluetoothConnection connection = await BluetoothConnection.toAddress(this._device.address);
-    connection.input.listen((data) {
-      print(ascii.decode(data));
-    });
+    this._onConnectClicked(this._device);
   }
 
   @override

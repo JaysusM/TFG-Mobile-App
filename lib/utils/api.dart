@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 
 class Api {
   static Api _api;
-  static const String API_URL = "http://192.168.1.41:5000/";
+  static const String API_URL = "https://floating-brook-69790.herokuapp.com/";
   final Client httpClient;
   
   Api._({@required this.httpClient}): assert(httpClient != null);
