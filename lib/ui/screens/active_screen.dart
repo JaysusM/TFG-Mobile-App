@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:internationalization/internationalization.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:mobile_app/utils/api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile_app/utils/globals.dart' as globals;
