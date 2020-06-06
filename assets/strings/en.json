@@ -22,5 +22,6 @@
   "error_connecting_title": "Pairing error",
   "error_connecting": "Something wrong occurred while connecting to the device. Maybe it is already paired with other device.",
   "home": "Home",
-  "map": "Mapa"
+  "map": "Map",
+  "stop_read": "Stop service"
 }

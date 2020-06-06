@@ -22,5 +22,6 @@
   "error_title": "Error de emparejamiento",
   "error_connecting": "Ha ocurrido un error conectando, puede que el dispositivo ya este emparejado",
   "home": "Inicio",
-  "map": "Mapa"
+  "map": "Mapa",
+  "stop_read": "Finalizar servicio"
 }
