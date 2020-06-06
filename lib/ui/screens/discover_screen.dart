@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:location/location.dart' as Location;
 import 'package:mobile_app/ui/screens/active_screen.dart';
 import 'package:mobile_app/ui/widgets/app_scaffold.dart';
 import 'package:mobile_app/ui/widgets/device_tile.dart';
-import 'dart:convert';
 import 'package:internationalization/internationalization.dart';
-import 'package:mobile_app/ui/widgets/loading_indicator.dart';
 import 'package:mobile_app/ui/widgets/loading_loader.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class DiscoverScreen extends StatefulWidget {
   @override
@@ -24,9 +24,7 @@ class DiscoverScreenState extends State<DiscoverScreen> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   bool _isLoading = true;
 
-  @override
-  void initState() {
-    _devices = new Set();
+  void startDiscovery() {
     _flutterBluetoothSerial.startDiscovery().listen((event) {
       this.setState(() {
         _devices.add(event.device);
@@ -35,6 +33,43 @@ class DiscoverScreenState extends State<DiscoverScreen> {
       this.setState(() {
         this._isLoading = false;
       });
+    });
+  }
+
+  void checkLocationEnabled() async {
+    var location = Location.Location();
+    bool enabled = await location.serviceEnabled();
+
+    if (enabled) {
+      startDiscovery();
+    } else {
+      bool gotEnabled = await location.requestService();
+      if (gotEnabled) {
+        startDiscovery();
+      } else {
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    _devices = new Set();
+
+    Permission.location.request().then((PermissionStatus status) {
+      if (status.isGranted) {
+        checkLocationEnabled();
+      } else if (status.isPermanentlyDenied) {
+        openAppSettings().then((_) async {
+          if (!(await Permission.location.status).isGranted) {
+            Navigator.of(context).pop();
+          } else {
+            checkLocationEnabled();
+          }
+        });
+      } else if (status.isDenied) {
+        Navigator.of(context).pop();
+      }
     });
     super.initState();
   }
@@ -63,7 +98,6 @@ class DiscoverScreenState extends State<DiscoverScreen> {
 
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (_) => ActiveScreen(connection)));
-
     } catch (error) {
       this.setState(() {
         this._isLoading = false;

@@ -24,49 +24,41 @@ class ActiveScreenState extends State<ActiveScreen> {
   final Api _api = Api.getInstance();
   int _numberReadOK, _numberReadFail;
 
-  void sendRead(String username, String position, String value, String language) {
+  void sendRead(
+      String username, String position, String value, String language) {
     _api
-      .addNewValue(username, position, value, language)
-      .then((_) => this.setState(() {
-            this._numberReadOK++;
-          }))
-      .catchError((_) => this.setState(() {
-            this._numberReadFail++;
-          }));
+        .addNewValue(username, position, value, language)
+        .then((_) => this.setState(() {
+              this._numberReadOK++;
+            }))
+        .catchError((_) => this.setState(() {
+              this._numberReadFail++;
+            }));
   }
 
   @override
   void initState() {
     _numberReadOK = 0;
     _numberReadFail = 0;
-
-    Permission.location.request().then((PermissionStatus status) {
-      if (status.isGranted) {
-        String readingData = "";
-        widget._connection.input.listen((data) {
-          readingData += ascii.decode(data);
-          String separator = "\r\n";
-          if (readingData.contains(separator)) {
-            List<String> readings = readingData.split(separator);
-            readingData = readings[1];
-            Geolocator()
+    String readingData = "";
+    widget._connection.input.listen((data) {
+      readingData += ascii.decode(data);
+      String separator = "\r\n";
+      if (readingData.contains(separator)) {
+        List<String> readings = readingData.split(separator);
+        readingData = readings[1];
+        Geolocator()
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
             .then((Position position) {
-              String parsedPosition = "${position.latitude},${position.longitude}";
-              String language = Strings.of(context).valueOf("language");
-              String userId = globals.userId;
+          String parsedPosition = "${position.latitude},${position.longitude}";
+          String language = Strings.of(context).valueOf("language");
+          String userId = globals.userId;
 
-              sendRead(userId, parsedPosition, readings[0], language);
-            }); 
-          }
+          sendRead(userId, parsedPosition, readings[0], language);
         });
-      } else if (status.isPermanentlyDenied) {
-        Navigator.of(context).pop();
-        openAppSettings();
-      } else if (status.isDenied) {
-        Navigator.of(context).pop();
       }
     });
+
     super.initState();
   }
 
