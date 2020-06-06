@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:mobile_app/ui/screens/active_screen.dart';
+import 'package:mobile_app/ui/widgets/app_scaffold.dart';
 import 'package:mobile_app/ui/widgets/device_tile.dart';
 import 'dart:convert';
 import 'package:internationalization/internationalization.dart';
@@ -77,13 +78,10 @@ class DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: Text(Strings.of(context).valueOf("discover"),
-              style: Theme.of(context).textTheme.title),
-        ),
-        body: Stack(children: <Widget>[
+    return AppScaffold(
+        scaffoldKey: _scaffoldKey,
+        title: Strings.of(context).valueOf("discover"),
+        mainView: Stack(children: <Widget>[
           ListView(
               children: _devices
                   .map((device) => DeviceTile(device, this.connectToDevice))

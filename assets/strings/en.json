@@ -1,6 +1,6 @@
 {
   "language": "en",
-  "welcome": "Welcome to AcouMeter",
+  "welcome": "Welcome to Sound Reader",
   "account_creation": "Account register",
   "register": "Register",
   "username": "Username",
@@ -20,5 +20,7 @@
   "pairing": "Pairing...",
   "pairing_wait": "Please, wait, we are trying to connect with the selected device",
   "error_connecting_title": "Pairing error",
-  "error_connecting": "Something wrong occurred while connecting to the device. Maybe it is already paired with other device."
+  "error_connecting": "Something wrong occurred while connecting to the device. Maybe it is already paired with other device.",
+  "home": "Home",
+  "map": "Mapa"
 }

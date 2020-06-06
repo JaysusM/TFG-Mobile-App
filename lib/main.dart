@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/ui/app_scaffold.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:internationalization/internationalization.dart';
+import 'package:mobile_app/ui/screens/login_screen.dart';
+import 'package:mobile_app/ui/widgets/app_scaffold.dart';
 
 void main () async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      title: 'Malaga Sound Reader',
+      title: 'Sound Reader',
       theme: ThemeData(
         fontFamily: 'Roboto',
         primaryColor: const Color(0xFF333349),
@@ -81,7 +82,7 @@ class MyApp extends StatelessWidget {
           )
         ),
       ),
-      home: AppScaffold()
+      home: AppScaffold(mainView: LoginScreen(), title: "Sound Reader")
     );
   }
 }

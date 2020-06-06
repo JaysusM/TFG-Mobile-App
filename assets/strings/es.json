@@ -1,6 +1,6 @@
 {
   "language": "es",
-  "welcome": "Bienvenido a AcouMeter",
+  "welcome": "Bienvenido a Sound Reader",
   "account_creation": "Creacion de nueva cuenta",
   "register": "Registro",
   "username": "Nombre de usuario",
@@ -20,5 +20,7 @@
   "pairing": "Emparejando...",
   "pairing_wait": "Por favor, espere, estamos intentando conectar con el dispositivo seleccionado",
   "error_title": "Error de emparejamiento",
-  "error_connecting": "Ha ocurrido un error conectando, puede que el dispositivo ya este emparejado"
+  "error_connecting": "Ha ocurrido un error conectando, puede que el dispositivo ya este emparejado",
+  "home": "Inicio",
+  "map": "Mapa"
 }
