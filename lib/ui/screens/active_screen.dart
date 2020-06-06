@@ -94,7 +94,7 @@ class ActiveScreenState extends State<ActiveScreen> {
             title: Text(Strings.of(context).valueOf("sending_data"),
                 style: Theme.of(context).textTheme.headline),
             subtitle: Text(
-                "${Strings.of(context).valueOf("reads")}: ${this._numberReadOK + this._numberReadFail}",
+                "${Strings.of(context).valueOf("reads")}: ${this._numberReadOK}\n${Strings.of(context).valueOf("queued")}: ${_failsQueue.length})",
                 style: Theme.of(context)
                     .textTheme
                     .subtitle

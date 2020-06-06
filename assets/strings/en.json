@@ -23,5 +23,6 @@
   "error_connecting": "Something wrong occurred while connecting to the device. Maybe it is already paired with other device.",
   "home": "Home",
   "map": "Map",
-  "stop_read": "Stop service"
+  "stop_read": "Stop service",
+  "queued": "Queued"
 }

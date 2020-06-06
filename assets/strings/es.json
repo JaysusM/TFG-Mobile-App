@@ -23,5 +23,6 @@
   "error_connecting": "Ha ocurrido un error conectando, puede que el dispositivo ya este emparejado",
   "home": "Inicio",
   "map": "Mapa",
-  "stop_read": "Finalizar servicio"
+  "stop_read": "Finalizar servicio",
+  "queued": "En cola"
 }
