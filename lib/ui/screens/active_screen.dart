@@ -26,23 +26,26 @@ class ActiveScreenState extends State<ActiveScreen> {
   Queue<String> _failsQueue;
 
   void sendRead(
-      String username, String position, String value, String language) {
+      String username, double latitude, double longitude, String value, String language) {
         const String SEPARATOR = "|";
 
     if (_failsQueue.isNotEmpty) {
       do {
         List<String> values = _failsQueue.removeFirst().split(SEPARATOR);
-        sendRead(username, values[0], values[1], language);
+        double latitude = double.parse(values[0]);
+        double longitude = double.parse(values[1]);
+        String value = values[2];
+        sendRead(username, latitude, longitude, value, language);
       } while(_failsQueue.isNotEmpty);
     }
 
     _api
-        .addNewValue(username, position, value, language)
+        .addNewValue(username, latitude, longitude, value, language)
         .then((_) => this.setState(() {
               this._numberReadOK++;
             }))
         .catchError((_) => this.setState(() {
-              _failsQueue.add(position + SEPARATOR + value);
+              _failsQueue.add(latitude.toString() + SEPARATOR + longitude.toString() + SEPARATOR + value);
             }));
   }
 
@@ -60,11 +63,10 @@ class ActiveScreenState extends State<ActiveScreen> {
         Geolocator()
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
             .then((Position position) {
-          String parsedPosition = "${position.latitude},${position.longitude}";
           String language = Strings.of(context).valueOf("language");
           String userId = globals.userId;
 
-          sendRead(userId, parsedPosition, readings[0], language);
+          sendRead(userId, position.latitude, position.longitude, readings[0], language);
         });
       }
     });

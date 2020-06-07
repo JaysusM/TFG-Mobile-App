@@ -35,11 +35,13 @@ class Api {
     return this.httpClient.post(url, body: body);
   }
 
-  Future<Response> addNewValue(userId, location, value, language) async {
+  Future<Response> addNewValue(String userId, double latitude, double longitude, String value, String language) async {
     const String url = API_URL + "measurement/new";
-    Map<String, String> body = new Map<String, String>();
+    Map<String, dynamic> body = new Map<String, dynamic>();
+    body["position"] = new Map<String, dynamic>();
+    body["position"]["latitude"] = latitude;
+    body["position"]["longitude"] = longitude;
     body["userId"] = userId;
-    body["coordenates"] = location;
     body["value"] = value;
     body["language"] = language;
     return this.httpClient.post(url, body: body);
