@@ -41,10 +41,12 @@ class ActiveScreenState extends State<ActiveScreen> {
 
     _api
         .addNewValue(username, latitude, longitude, value, language)
-        .then((_) => this.setState(() {
+        .then((message) => this.setState(() {
+              print(message.body);
               this._numberReadOK++;
             }))
-        .catchError((_) => this.setState(() {
+        .catchError((err) => this.setState(() {
+              print(err);
               _failsQueue.add(latitude.toString() + SEPARATOR + longitude.toString() + SEPARATOR + value);
             }));
   }
@@ -96,14 +98,15 @@ class ActiveScreenState extends State<ActiveScreen> {
             title: Text(Strings.of(context).valueOf("sending_data"),
                 style: Theme.of(context).textTheme.headline),
             subtitle: Text(
-                "${Strings.of(context).valueOf("reads")}: ${this._numberReadOK}\n${Strings.of(context).valueOf("queued")}: ${_failsQueue.length})",
+                "${Strings.of(context).valueOf("reads")}: ${this._numberReadOK}\n${Strings.of(context).valueOf("queued")}: ${_failsQueue.length}",
                 style: Theme.of(context)
                     .textTheme
                     .subtitle
                     .copyWith(color: Theme.of(context).primaryColor)),
           )),
           Center(child: RaisedButton(
-            child: Text(Strings.of(context).valueOf("stop_read")),
+            child: Text(Strings.of(context).valueOf("stop_read"), style: TextStyle(color: Colors.white)),
+            color: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.of(context).pop();
             },

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:meta/meta.dart';
 import 'package:http/http.dart';
 
@@ -38,9 +40,12 @@ class Api {
   Future<Response> addNewValue(String userId, double latitude, double longitude, String value, String language) async {
     const String url = API_URL + "measurement/new";
     Map<String, dynamic> body = new Map<String, dynamic>();
-    body["position"] = new Map<String, dynamic>();
-    body["position"]["latitude"] = latitude;
-    body["position"]["longitude"] = longitude;
+    body["position"] = """
+    {
+      "latitude": $latitude,
+      "longitude": $longitude
+    }
+    """;
     body["userId"] = userId;
     body["value"] = value;
     body["language"] = language;
